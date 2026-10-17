@@ -168,8 +168,8 @@ kubetest
     --aksengine-download-url=https://github.com/Azure/aks-engine/releases/download/v0.52.0/aks-engine-v0.52.0-linux-amd64.tar.gz \
     --aksengine-public-key=$K8S_SSH_PUBLIC_KEY_PATH \
     --aksengine-private-key=$K8S_SSH_PRIVATE_KEY_PATH \
-    --aksengine-orchestratorRelease=1.23 \
-    --aksengine-template-url=https://raw.githubusercontent.com/kubernetes-sigs/windows-testing/master/job-templates/kubernetes_release_1_23.json \
+    --aksengine-orchestratorRelease=1.18 \
+    --aksengine-template-url=https://raw.githubusercontent.com/kubernetes-sigs/windows-testing/18d489230feddf16573cb56035a771084b10d316/job-templates/kubernetes_release_1_18.json \
     --aksengine-agentpoolcount=2 \
     --test_args="--ginkgo.flakeAttempts=2 --node-os-distro=windows --ginkgo.focus=\[Conformance\]|\[NodeConformance\]|\[sig-windows\]|\[sig-apps\].CronJob|\[sig-api-machinery\].ResourceQuota|\[sig-scheduling\].SchedulerPreemption|\[sig-autoscaling\].\[Feature:HPA\]  --ginkgo.skip=\[LinuxOnly\]|\[Serial\]|GMSA|Guestbook.application.should.create.and.stop.a.working.application" \
     --ginkgo-parallel=6
@@ -181,7 +181,7 @@ A few other parameters you should be aware of:
 # will tear down the cluster (when doing development it is sometime better to leave the cluster up for analysis)
 --down
 
-# will build kubernetes locally instead of using --aksengine-orchestratorRelease=1.23
+# will build kubernetes locally instead of using --aksengine-orchestratorRelease=1.18
 --build=quick
 
 # deploy Kubernetes images built from ${GOPATH}/src/k8s.io/kubernetes for the control plane and Linux nodes
@@ -208,13 +208,15 @@ will usually have a `exec format error`.
 #### Install golang on Windows machine
 
 Pick the Go version that is [compatible](https://github.com/kubernetes/community/blob/master/contributors/devel/development.md)
-with the Kubernetes version you intend to build. Download the MSI file to the Windows machine for development (for example, Go 1.22.0):
+with the Kubernetes version you intend to build. Download the MSI file to the Windows machine for development:
 
 ```powershell
-Invoke-WebRequest https://dl.google.com/go/go1.22.0.windows-amd64.msi -Outfile go1.22.0.windows-amd64.msi
+# Set the Go version compatible with your Kubernetes version (e.g. 1.22.0)
+$GO_VERSION = "1.22.0"
+Invoke-WebRequest "https://dl.google.com/go/go$GO_VERSION.windows-amd64.msi" -Outfile "go$GO_VERSION.windows-amd64.msi"
 ```
 
-Start the MSI installer, e.g. `Start-Process .\go1.22.0.windows-amd64.msi` and finish the installation.
+Start the MSI installer, e.g. `Start-Process .\go$GO_VERSION.windows-amd64.msi` and finish the installation.
 
 Add go path to the `PATH` environment variable:
 
