@@ -213,10 +213,11 @@ with the Kubernetes version you intend to build. Download the MSI file to the Wi
 ```powershell
 # Set the Go version compatible with your Kubernetes version (e.g. 1.22.0)
 $GO_VERSION = "1.22.0"
-Invoke-WebRequest "https://dl.google.com/go/go$GO_VERSION.windows-amd64.msi" -Outfile "go$GO_VERSION.windows-amd64.msi"
+$installer = "go${GO_VERSION}.windows-amd64.msi"
+Invoke-WebRequest "https://dl.google.com/go/$installer" -Outfile $installer
 ```
 
-Start the MSI installer, e.g. `Start-Process .\go$GO_VERSION.windows-amd64.msi` and finish the installation.
+Start the MSI installer, e.g. `Start-Process .\$installer` and finish the installation.
 
 Add go path to the `PATH` environment variable:
 
